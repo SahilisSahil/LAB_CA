@@ -1,69 +1,53 @@
 Lab 2: Structural and Behavioral Realization of Fundamental Logic Gates in VHDL
 
+
 1. Objective
-To implement individual VHDL code blocks for the seven core digital logic gates: AND, OR, NOT, NAND, NOR, XOR, and XNOR.
 
-To construct behavioral test benches to simulate the input-output combinations for each gate.
+The purpose of this lab is to design individual VHDL implementations for the seven fundamental logic gates: AND, OR, NOT, NAND, NOR, XOR, and XNOR.
 
-To analyze the resulting signal transitions in GTKWave and cross-verify the waveforms against theoretical Boolean truth tables.
+Another goal is to create behavioral test benches to simulate all possible input combinations and observe the corresponding outputs for each gate.
+
+Finally, the simulation results are analyzed using GTKWave to verify that the waveform outputs match the expected Boolean truth tables.
 
 2. Theoretical Background
-Digital systems rely fundamentally on logic gates—hardware circuits that compute binary decisions based on Boolean algebra. In VHDL, these hardware primitives map directly to built-in concurrent operators.
 
-While gates like AND, OR, and NOT form the basis of standard logic, universal gates (NAND and NOR) are critical for physical hardware manufacturing because any arbitrary Boolean equation can be constructed using only these gate types. XOR and XNOR serve as the structural backbone for arithmetic operations like adders, parity checkers, and comparators.
+Digital systems are built upon logic gates, which are basic circuits that perform operations based on Boolean algebra. In VHDL, these operations are directly represented using built-in logical operators, making hardware description more intuitive and efficient.
 
+The basic gates like AND, OR, and NOT form the foundation of digital logic design. NAND and NOR are considered universal gates because any digital system can be implemented using only one of these types. On the other hand, XOR and XNOR are widely used in arithmetic circuits such as adders, parity generators, and comparators due to their ability to detect differences and equivalence between signals.
 
-Core Gate Specifications and VHDL Native Operators
+Each logic function in VHDL directly corresponds to a Boolean expression:
 
-​| Gate Type | VHDL Operator | Boolean Formula               | Output Condition (How it Works)                             |
-| --------- | ------------- | ----------------------------- | ----------------------------------------------------------- |
-| AND       | `and`         | ( Y = A \cdot B )             | Outputs 1 only when both inputs are 1.                      |
-| OR        | `or`          | ( Y = A + B )                 | Outputs 1 if at least one input is 1.                       |
-| NOT       | `not`         | ( Y = \overline{A} )          | Inverts the input (turns 1 to 0, and 0 to 1).               |
-| NAND      | `nand`        | ( Y = \overline{A \cdot B} )  | Inverted AND; outputs 0 only when both inputs are 1.        |
-| NOR       | `nor`         | ( Y = \overline{A + B} )      | Inverted OR; outputs 1 only when both inputs are 0.         |
-| XOR       | `xor`         | ( Y = A \oplus B )            | Outputs 1 only when the inputs are different.               |
-| XNOR      | `xnor`        | ( Y = \overline{A \oplus B} ) | Inverted XOR; outputs 1 only when the inputs are identical. |
+AND produces a high output only when both inputs are high.
+OR gives a high output if at least one input is high.
+NOT inverts the input signal.
+NAND outputs low only when both inputs are high, otherwise high.
+NOR outputs high only when both inputs are low.
+XOR outputs high when inputs are different.
+XNOR outputs high when inputs are identical.
+3. Implementation Overview
 
-3. Implementation Syntax Example
-While each gate can be separated into its own module, a combined parallel implementation layout using the Dataflow abstraction style is typically structured as follows:
+Instead of writing separate modules for each gate, a combined dataflow-based VHDL design can be used where all gates operate in parallel within a single architecture.
 
-VHDL
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+In this design, an entity is defined with two input signals (A and B) and multiple output signals corresponding to each logic gate. The architecture then assigns each output using concurrent signal assignment statements.
 
-entity LOGIC_GATES is
-    port (
-        A : in  std_logic;
-        B : in  std_logic;
-        Y_AND  : out std_logic;
-        Y_OR   : out std_logic;
-        Y_NOT  : out std_logic;
-        Y_NAND : out std_logic;
-        Y_NOR  : out std_logic;
-        Y_XOR  : out std_logic;
-        Y_XNOR : out std_logic
-    );
-end entity LOGIC_GATES;
+The NOT gate is slightly different because it operates on a single input, while all other gates use both A and B.
 
-architecture Dataflow of LOGIC_GATES is
-begin
-    Y_AND  <= A and B;
-    Y_OR   <= A or B;
-    Y_NOT  <= not A; -- Operates strictly on a single input
-    Y_NAND <= A nand B;
-    Y_NOR  <= A nor B;
-    Y_XOR  <= A xor B;
-    Y_XNOR <= A xnor B;
-end architecture Dataflow;
+The VHDL code follows a simple structure where each output continuously reflects the result of its corresponding logical operation. This ensures real-time hardware-like behavior during simulation.
+
 4. Discussion
-This experiment focused on mapping mathematical Boolean primitives to actual concurrent VHDL expressions. Writing hardware equations highlights the distinct difference between conditional branch programming in software and dataflow hardware propagation.
 
-During the simulation phase, a testbench sequentially stepped through every physical state combination for the inputs: (A=0, B=0), (A=0, B=1), (A=1, B=0), and (A=1, B=1). When compiling via GHDL and evaluating the signal transitions using GTKWave, we verified that the outputs reacted instantaneously to any change on the input bus wires.
+This experiment demonstrated how Boolean algebra can be directly translated into VHDL concurrent statements, which represent real hardware behavior rather than sequential software execution.
 
-For instance, the XOR gate output shifted high exclusively when the inputs mismatched, whereas the NAND gate output remained strictly high for all states except the final 1-1 condition. This timing alignment confirmed that the software-simulated primitives exactly duplicate the physical voltage characteristics of hardware logic gates.
+During simulation, a testbench was used to apply all possible input combinations: 00, 01, 10, and 11. The output responses were observed using GTKWave after compiling with GHDL.
+
+The results showed that each gate behaved exactly as expected. For example, the XOR output became high only when the inputs were different, while the NAND output remained high for all cases except when both inputs were 1.
+
+The waveforms confirmed that the outputs changed immediately with input variations, demonstrating correct combinational logic behavior without delays or inconsistencies.
 
 5. Conclusion
-The functional realization of the seven basic logic gates was successfully achieved using VHDL. By defining the hardware constraints within the dataflow architecture, the direct mapping of mathematical operations to signal behavior was observed.
 
-Visual validation via GTKWave confirmed that all simulated outputs matched their respective truth tables without logic discrepancies. This experiment successfully solidified our foundational skills in using VHDL syntax, writing basic test stimulation structures, and debugging complex bus logic interactions using open-source EDA tools.
+The implementation of the seven fundamental logic gates using VHDL was successfully completed.
+
+By using a dataflow modeling approach, each Boolean expression was directly mapped to hardware-like signal behavior. Simulation results verified that all outputs matched their theoretical truth tables.
+
+This lab strengthened understanding of VHDL syntax, combinational logic design, and waveform analysis using GTKWave, providing a solid foundation for more advanced digital system design.
