@@ -1,54 +1,86 @@
-Lab 3: Design and Simulation of Encoder and Decoder Using VHDL
-Objective
-To implement a 4-to-2 Priority Encoder using VHDL.
-To implement a 2-to-4 Decoder using VHDL.
-To verify their functionality through simulation.
-Theory
-4-to-2 Priority Encoder
+# Lab 3: Design and Simulation of Encoder and Decoder Using VHDL
 
-An encoder is a combinational logic circuit that converts multiple input lines into a smaller number of output bits. A 4-to-2 encoder has four input lines (I0, I1, I2, and I3) and produces a 2-bit binary output.
+## Objective
 
-In a priority encoder, if more than one input is active simultaneously, the input with the highest priority is encoded. For a 4-to-2 priority encoder, the priority order is:
+* Design and implement a 4-to-2 Priority Encoder using VHDL.
+* Design and implement a 2-to-4 Decoder using VHDL.
+* Simulate both circuits and verify their operation through waveform analysis.
+* Compare simulation results with the corresponding truth tables.
 
+## Theory
+
+### 4-to-2 Priority Encoder
+
+An encoder is a combinational logic circuit that converts multiple input signals into a smaller binary representation. A 4-to-2 encoder accepts four input lines and generates a 2-bit output code.
+
+In a priority encoder, inputs are assigned different priority levels. When multiple inputs become active at the same time, the encoder produces the binary code of the highest-priority input.
+
+For a 4-to-2 priority encoder, the priority order is:
+
+```text
 I3 > I2 > I1 > I0
+```
 
-This ensures that only the highest-priority active input determines the output.
+This means that if `I3` is active, it will be encoded regardless of the states of the lower-priority inputs.
 
-Truth Table
-I3	I2	I1	I0	Y1	Y0
-0	0	0	1	0	0
-0	0	1	X	0	1
-0	1	X	X	1	0
-1	X	X	X	1	1
-2-to-4 Decoder
+### Priority Encoder Truth Table
 
-A decoder is a combinational circuit that converts binary information into a unique output line. A 2-to-4 decoder accepts a 2-bit input and activates one of four output lines based on the input combination.
+| I3 | I2 | I1 | I0 | Y1 | Y0 |
+| -- | -- | -- | -- | -- | -- |
+| 0  | 0  | 0  | 1  | 0  | 0  |
+| 0  | 0  | 1  | X  | 0  | 1  |
+| 0  | 1  | X  | X  | 1  | 0  |
+| 1  | X  | X  | X  | 1  | 1  |
 
-Only one output remains HIGH at any given time, while all others remain LOW.
+---
 
-Truth Table
-A1	A0	Y3	Y2	Y1	Y0
-0	0	0	0	0	1
-0	1	0	0	1	0
-1	0	0	1	0	0
-1	1	1	0	0	0
-Results
-Encoder Simulation
+### 2-to-4 Decoder
 
-(Insert Encoder Waveform Screenshot Here)
+A decoder is a combinational circuit that converts binary input data into a unique output line. A 2-to-4 decoder takes a 2-bit input and activates one of four outputs corresponding to the input combination.
 
-Decoder Simulation
+At any instant, only one output remains HIGH while all others remain LOW.
 
-(Insert Decoder Waveform Screenshot Here)
+### Decoder Truth Table
 
-The simulation waveforms confirmed that both circuits operated according to their respective truth tables.
+| A1 | A0 | Y3 | Y2 | Y1 | Y0 |
+| -- | -- | -- | -- | -- | -- |
+| 0  | 0  | 0  | 0  | 0  | 1  |
+| 0  | 1  | 0  | 0  | 1  | 0  |
+| 1  | 0  | 0  | 1  | 0  | 0  |
+| 1  | 1  | 1  | 0  | 0  | 0  |
 
-Discussion
-The priority encoder successfully converted active input lines into a corresponding 2-bit binary code.
-When multiple inputs were active, the highest-priority input was selected, ensuring reliable operation.
-The decoder correctly translated each binary input combination into a unique output line.
-Only one decoder output became active for each input combination, demonstrating proper decoding behavior.
-The simulation results matched the expected theoretical outputs, validating the VHDL design.
-Conclusion
+## Implementation
 
-The 4-to-2 priority encoder and 2-to-4 decoder were successfully designed and simulated using VHDL. The simulation results agreed with the theoretical truth tables, confirming correct circuit operation. This experiment provided practical understanding of combinational logic circuits and demonstrated how encoders and decoders are used in digital systems for data encoding and signal selection.
+The priority encoder was implemented using conditional statements that check the input signals according to their priority level. The highest active input determines the final output code.
+
+The decoder was implemented using concurrent signal assignments that map each binary input combination to its corresponding output line.
+
+Both designs were simulated using GHDL, and the resulting waveforms were analyzed using GTKWave.
+
+## Output
+
+### Priority Encoder Simulation
+
+![Priority Encoder Waveform](encoder.png)
+
+### Decoder Simulation
+
+![Decoder Waveform](decoder.png)
+
+## Discussion
+
+The simulation results demonstrated the correct behavior of both combinational circuits.
+
+For the priority encoder, the output always represented the highest-priority active input. When multiple inputs were asserted simultaneously, lower-priority inputs were ignored, ensuring deterministic operation.
+
+The decoder successfully translated each 2-bit binary input into a unique active output line. For every input combination, only one output remained HIGH while the remaining outputs stayed LOW.
+
+Waveform analysis confirmed that both circuits responded immediately to input changes, reflecting the expected behavior of combinational logic systems.
+
+## Conclusion
+
+* Successfully designed and implemented a 4-to-2 Priority Encoder using VHDL.
+* Successfully designed and implemented a 2-to-4 Decoder using VHDL.
+* Verified the functionality of both circuits through simulation and waveform analysis.
+* Observed correct encoding and decoding operations for all valid input combinations.
+* Gained practical experience with combinational circuit design and VHDL-based hardware modeling.
