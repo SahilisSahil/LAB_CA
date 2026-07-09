@@ -1,0 +1,7 @@
+v 4
+file . "bcd_xs3_tb.vhd" "7b976ac6bf3df9c08e2d541bb284dcb76a0c4c19" "20260702070612.066":
+  entity bcd_xs3_tb at 1( 0) + 0 on 17;
+  architecture simulation of bcd_xs3_tb at 7( 88) + 0 on 18;
+file . "bcd_to_xs3.vhd" "d482d4ad397933e21485751ac150bcd0594b5edf" "20260702070601.707":
+  entity bcd_to_xs3 at 1( 0) + 0 on 15;
+  architecture behavioral of bcd_to_xs3 at 12( 232) + 0 on 16;
